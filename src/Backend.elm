@@ -20,41 +20,67 @@ import Models exposing (Model)
 
 -- Debería darnos la url de la cancion en base al id
 urlById : String -> List Song -> String
-urlById id songs = ""
+urlById id songs =(encontrarSong id songs).url
+
+encontrarSong :  String -> List Song -> Song
+encontrarSong id songs = findSong (esLaSong id) songs
+
+esLaSong : String -> Song -> Bool
+esLaSong idBuscada song = idBuscada == song.id  
 
 -- Debería darnos las canciones que tengan ese texto en nombre o artista
 filterByName : String -> List Song -> List Song
-filterByName text songs = songs
+filterByName text songs = filter (esArtistaONombre text) songs
+
+esArtistaONombre : String -> Song -> Bool
+esArtistaONombre text song = esArtista text song || esNombre text song 
+
+esArtista : String -> Song -> Bool
+esArtista text song = song.artist == text
+
+esNombre : String -> Song -> Bool
+esNombre text song = song.nombre == text
 
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
 toggleLike : String -> List Song -> List Song
-toggleLike id songs = songs
+toggleLike id songs 
+  if (isLiked<<encontarSong id) songs  then 
+    (dislikeSong<<encontrarSong id) songs 
+  else  
+    (likeSong<<encontrarSong id) song.artist
+
+dislikeSong: Song -> Song
+dislikeSong song = song {liked = False} 
+
+likeSong : Song -> Song 
+likeSong song = song {liked = True}
 
 -- Esta funcion tiene que decir si una cancion tiene
--- nuestro like o no, por ahora funciona mal...
--- hay que arreglarla
+-- nuestro like o no
+
 isLiked : Song  -> Bool
-isLiked song = False
+isLiked song = song.liked
 
 -- Recibe una lista de canciones y nos quedamos solo con las que
 -- tienen un like
+
 filterLiked : List Song -> List Song
-filterLiked songs = songs
+filterLiked songs = filter isLiked songs
 
 -- Agrega una cancion a la cola de reproduccion
 -- (NO es necesario preocuparse porque este una sola vez)
 addSongToQueue : Song -> List Song -> List Song
-addSongToQueue song queue = queue
+addSongToQueue song queue = song :: queue
 
 -- Saca una cancion de la cola
 -- (NO es necesario que se elimine una sola vez si esta repetida)
 removeSongFromQueue : String -> List Song -> List Song
-removeSongFromQueue id queue = queue
+removeSongFromQueue id queue = fiter (not<<esLaSong id) queue
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
-playNextFromQueue model = model
+playNextFromQueue model = playSong model {queue = tailSafe mode1.queue } idFirst (tailSafe mode1.queue)
 
 -------- Funciones Listas --------
 
