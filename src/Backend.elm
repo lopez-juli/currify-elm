@@ -30,7 +30,7 @@ esLaSong idBuscada song = idBuscada == song.id
 
 -- Debería darnos las canciones que tengan ese texto en nombre o artista
 filterByName : String -> List Song -> List Song
-filterByName text songs = filter (esArtistaONombre text) songs
+filterByName text songs = List.filter (esArtistaONombre text) songs
 
 esArtistaONombre : String -> Song -> Bool
 esArtistaONombre text song = esArtista text song || esNombre text song 
@@ -44,11 +44,11 @@ esNombre text song = song.nombre == text
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
 toggleLike : String -> List Song -> List Song
-toggleLike id songs 
-  if (isLiked<<encontarSong id) songs  then 
-    (dislikeSong<<encontrarSong id) songs 
+toggleLike id songs =
+  if (isLiked << encontrarSong id) songs  then
+    (dislikeSong << encontrarSong id) songs 
   else  
-    (likeSong<<encontrarSong id) song.artist
+    (likeSong << encontrarSong id) songs.artist
 
 dislikeSong: Song -> Song
 dislikeSong song = song {liked = False} 
@@ -66,7 +66,7 @@ isLiked song = song.liked
 -- tienen un like
 
 filterLiked : List Song -> List Song
-filterLiked songs = filter isLiked songs
+filterLiked songs = List.filter isLiked songs
 
 -- Agrega una cancion a la cola de reproduccion
 -- (NO es necesario preocuparse porque este una sola vez)
@@ -76,11 +76,11 @@ addSongToQueue song queue = song :: queue
 -- Saca una cancion de la cola
 -- (NO es necesario que se elimine una sola vez si esta repetida)
 removeSongFromQueue : String -> List Song -> List Song
-removeSongFromQueue id queue = fiter (not<<esLaSong id) queue
+removeSongFromQueue id queue = List.filter (not<<esLaSong id) queue
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
-playNextFromQueue model = playSong model {queue = tailSafe mode1.queue } idFirst (tailSafe mode1.queue)
+playNextFromQueue model = playSong model {queue = tailSafe model.queue } idFirst (tailSafe model.queue)
 
 -------- Funciones Listas --------
 
