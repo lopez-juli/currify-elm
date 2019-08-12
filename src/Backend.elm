@@ -44,18 +44,14 @@ esNombre text song = song.nombre == text
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
 toggleLike : String -> List Song -> List Song
-toggleLike id songs =
-  if (isLiked << encontrarSong id) songs  then
-    (dislikeSong << encontrarSong id) songs 
-  else  
-    (likeSong << encontrarSong id) songs.artist
+toggleLike id songs = map (cambiarLikeSiEs id) songs
 
-dislikeSong: Song -> Song
-dislikeSong song = song {liked = False} 
-
-likeSong : Song -> Song 
-likeSong song = song {liked = True}
-
+cambiarLike : String -> Song -> Song
+cambiarLike idBuscado song  if 
+  song.id == idBuscado then
+    song {liked = (not<<isLiked) song}
+  else 
+   song
 -- Esta funcion tiene que decir si una cancion tiene
 -- nuestro like o no
 
