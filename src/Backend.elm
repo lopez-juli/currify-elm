@@ -47,11 +47,8 @@ toggleLike : String -> List Song -> List Song
 toggleLike id songs = map (cambiarLikeSiEs id) songs
 
 cambiarLike : String -> Song -> Song
-cambiarLike idBuscado song  if 
-  song.id == idBuscado then
-    song {liked = (not<<isLiked) song}
-  else 
-   song
+cambiarLike idBuscado song = if idBuscado == song.id then {song | liked = ! song.liked}
+  else song
 -- Esta funcion tiene que decir si una cancion tiene
 -- nuestro like o no
 
@@ -76,7 +73,7 @@ removeSongFromQueue id queue = List.filter (not<<esLaSong id) queue
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
-playNextFromQueue model = playSong model {queue = tailSafe model.queue } idFirst (tailSafe model.queue)
+playNextFromQueue model = playSong {mode | queue = tailSafe model.queue} idFirst (tailSafe model.queue)
 
 -------- Funciones Listas --------
 
