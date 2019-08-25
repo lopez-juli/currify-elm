@@ -39,15 +39,15 @@ esArtista : String -> Song -> Bool
 esArtista text song = song.artist == text
 
 esNombre : String -> Song -> Bool
-esNombre text song = song.nombre == text
+esNombre text song = song.name == text
 
 -- Recibe un id y tiene que likear/dislikear una cancion
 -- switchear song.liked
 toggleLike : String -> List Song -> List Song
-toggleLike id songs = map (cambiarLikeSiEs id) songs
+toggleLike id songs = List.map (cambiarLike id) songs
 
 cambiarLike : String -> Song -> Song
-cambiarLike idBuscado song = if idBuscado == song.id then {song | liked = ! song.liked}
+cambiarLike idBuscado song = if idBuscado == song.id then {song | liked = song.liked}
   else song
 -- Esta funcion tiene que decir si una cancion tiene
 -- nuestro like o no
@@ -73,7 +73,7 @@ removeSongFromQueue id queue = List.filter (not<<esLaSong id) queue
 
 -- Hace que se reproduzca la canción que sigue y la saca de la cola
 playNextFromQueue : Model -> Model
-playNextFromQueue model = playSong {mode | queue = tailSafe model.queue} idFirst (tailSafe model.queue)
+playNextFromQueue model = playSong {model | queue = tailSafe model.queue} idFirst (tailSafe model.queue)
 
 -------- Funciones Listas --------
 
